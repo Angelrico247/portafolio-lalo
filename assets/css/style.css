@@ -1290,7 +1290,7 @@ html {
     background-image:
     linear-gradient( 0deg,
     #000000,
-    #0000006a), url(../images/lalo/Hero.jpg) ;
+    #000000c6), url(../images/lalo/Hero.jpg) ;
     background-size: cover;
     background-position: center center;
     z-index: 1;
@@ -1337,8 +1337,8 @@ html {
     color: transparent; /* Relleno transparente */
     
     /* Un borde fino de 1.5px. Asegúrate que --text-color sea blanco */
-    -webkit-text-stroke: 1.5px white; 
-    text-stroke: 1.5px var(--text-color);
+    -webkit-text-stroke: 2px var(--primary-color); 
+    text-stroke: 2px white;
 }
 
 .hero-content h1 {
@@ -1357,6 +1357,56 @@ html {
     top: -30%;
     z-index: -9;
     border-radius: 50%;
+}
+
+.filling-text span {
+    display: inline-block;
+    position: relative;
+    /* Mantenemos el alternate para el ida y vuelta */
+    animation: strokeSweep 3s  infinite alternate;
+    
+    /* ESTADO BASE: Letra transparente con borde gris/blanco */
+    color: transparent; 
+    -webkit-text-stroke: 1.5px var(--text-color); 
+    transition: .3s;
+}
+
+@keyframes strokeSweep {
+    /* 0% al 95%: El borde tiene el color normal */
+    0%, 70% { 
+        -webkit-text-stroke: 1.5px var(--text-color); 
+    }
+    /* 96% al 100%: El borde cambia al color primario (naranja) */
+    91%, 100% { 
+        -webkit-text-stroke: 1.5px var(--primary-color); 
+    }
+}
+
+/* --- ESCALONADO DE 0.5s --- */
+.filling-text span:nth-child(1) { animation-delay: 1s; }
+.filling-text span:nth-child(2) { animation-delay: 1.2s; }
+.filling-text span:nth-child(3) { animation-delay: 1.4s; }
+.filling-text span:nth-child(4) { animation-delay: 1.6s; }
+.filling-text span:nth-child(5) { animation-delay: 1.8s; }
+.filling-text span:nth-child(6) { animation-delay: 2s; }
+.filling-text span:nth-child(7) { animation-delay: 2.2s; }
+.filling-text span:nth-child(8) { animation-delay: 2.4s; }
+
+.filling-text span:nth-child(9) { animation-delay: 2.6s; }
+.filling-text span:nth-child(10) { animation-delay: 2.8s; }
+.filling-text span:nth-child(11) { animation-delay: 3s; }
+.filling-text span:nth-child(12) { animation-delay: 3.2s; }
+.filling-text span:nth-child(13) { animation-delay: 3.4s; }
+.filling-text span:nth-child(14) { animation-delay: 3.6s; }
+.filling-text span:nth-child(15) { animation-delay: 3.8s; }
+.filling-text span:nth-child(16) { animation-delay: 4s; }
+.filling-text span { animation-delay: 4.2s; }
+
+/* Palabra: CREATIVO */
+
+
+@media (max-width: 767px) {
+    .filling-text { font-size: 50px; }
 }
 
 .hero-btns {
