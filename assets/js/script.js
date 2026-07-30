@@ -369,7 +369,7 @@ Version      : 1.0
         if (isValidEmail(data['email']) && (data['message'].length > 1) && (data['name'].length > 1) && (data['subject'].length > 1)) {
             $.ajax({
                 type: "POST",
-                url: "sendmail.php",
+                url: "https://lalo-contact-api.vercel.app/api/contact",
                 data: data,
                 success: function() {
                     $('#contactForm .input-success').delay(500).fadeIn(1000);
@@ -417,8 +417,7 @@ Version      : 1.0
        When document is loaded, do
        ========================================================================== */
 
-    $(window).on('load', function() {
-
+    function runPreloaderExit() {
 
         const svg = document.getElementById("preloaderSvg");
         const tl = gsap.timeline();
@@ -447,8 +446,26 @@ Version      : 1.0
             display: "none",
         });
 
+        // Safety net: if anything in the GSAP timeline above ever fails to
+        // complete (plugin missing, tab throttling, etc.), force the
+        // preloader out of the way so visitors are never stuck on it.
+        setTimeout(function() {
+            const preloader = document.querySelector(".preloader");
+            if (preloader && getComputedStyle(preloader).display !== "none") {
+                preloader.style.display = "none";
+            }
+        }, 4000);
 
-    });
+    }
+
+    // If the window has already fired 'load' by the time this script runs
+    // (common with cached assets), $(window).on('load', ...) below would
+    // never fire and the preloader would stay on screen forever.
+    if (document.readyState === 'complete') {
+        runPreloaderExit();
+    } else {
+        $(window).on('load', runPreloaderExit);
+    }
 
     /*
      * ----------------------------------------------------------------------------------------
