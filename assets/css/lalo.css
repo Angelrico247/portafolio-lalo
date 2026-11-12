@@ -159,7 +159,7 @@ ul { padding: 0; list-style: none; }
     position: relative; padding: 32px; height: 100%;
     background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
 }
-.card__num { display: block; margin-bottom: 38px; font: 800 44px/1 var(--font-title); color: transparent; -webkit-text-stroke: 1px rgba(255, 255, 255, .35); }
+.card__num { display: block; margin-bottom: 38px; font: 800 44px/1 var(--font-title); color: var(--accent); }
 .card h3 { font: 700 22px/1.25 var(--font-title); color: var(--heading); margin-bottom: 12px; }
 .card p { color: var(--text); }
 
@@ -169,14 +169,19 @@ ul { padding: 0; list-style: none; }
     border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface);
     color: inherit; font: inherit; text-align: left; cursor: zoom-in;
 }
-.work img { width: 100%; aspect-ratio: 16 / 11; object-fit: cover; transition: transform .6s ease; }
+.works { gap: 22px; }
+/* Ritmo del mosaico: el primero y el último ocupan toda la fila; el resto va de dos en dos. */
+.works__wide { grid-column: 1 / -1; }
+/* height:auto es necesario: sin él, el atributo height del <img> gana y estira la tarjeta a 788px. */
+.work img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; transition: transform .6s ease; }
+.works__wide .work img { aspect-ratio: 2 / 1; }
 .work:hover img { transform: scale(1.05); }
 .work__meta { position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 22px; background: linear-gradient(to top, rgba(0, 0, 0, .88), transparent); }
 .work__meta strong { font: 700 20px/1.2 var(--font-title); color: #fff; }
 
 /* Sobre mí */
-.about { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); gap: 44px; align-items: start; margin-top: 44px; }
-.about__photo { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); border: 1px solid var(--line); }
+.about { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 44px; align-items: start; margin-top: 44px; }
+.about__photo { width: 100%; max-width: 240px; height: auto; border-radius: var(--radius); border: 1px solid var(--line); }
 .about__text { display: grid; gap: 26px; justify-items: start; }
 .about__text > p { font-size: 18px; }
 .chips { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -257,7 +262,7 @@ ul { padding: 0; list-style: none; }
     .hero__glow { width: 360px; height: 360px; }
     .grid--2, .contact { grid-template-columns: 1fr; }
     .about { grid-template-columns: 1fr; }
-    .about__photo { max-width: 340px; }
+    .about__photo { max-width: 220px; }
     .section { padding: 54px 0; }
 }
 @media (max-width: 575px) {
