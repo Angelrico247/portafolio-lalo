@@ -38,21 +38,8 @@ ul { padding: 0; list-style: none; }
 }
 .skip-link:focus { top: 16px; }
 
-/* ---------- Fondo de toda la página ---------- */
-/* La foto va pegada al inicio de la página, difuminada; un degradado la lleva de clara arriba a negra abajo. */
-:root { --bg-h: min(1150px, 150vh); }
+/* ---------- Fondo ---------- */
 html, body { overflow-x: clip; }
-body { position: relative; }
-body::before {
-    content: ""; position: absolute; z-index: -2; top: -30px; left: -30px; right: -30px;
-    height: calc(var(--bg-h) + 30px);
-    background: url("../img/hero-bg.webp") center top / cover no-repeat;
-    filter: blur(9px);
-}
-body::after {
-    content: ""; position: absolute; z-index: -1; top: 0; left: 0; right: 0; height: var(--bg-h);
-    background: linear-gradient(180deg, rgba(0, 0, 0, .18) 0%, rgba(0, 0, 0, .55) 42%, #000 100%);
-}
 
 /* Esferas naranjas difuminadas detrás de cada sección (dos por sección, en lados alternos). */
 .section { position: relative; isolation: isolate; }
@@ -160,15 +147,25 @@ body::after {
 
 /* ---------- Hero ---------- */
 .hero {
-    position: relative; isolation: isolate;
+    position: relative; isolation: isolate; overflow: hidden;
     min-height: calc(100vh - 140px);
     display: flex; flex-direction: column; justify-content: center; gap: 28px;
-    padding: 90px 0 120px;
+    margin-top: 24px; padding: 90px clamp(24px, 5vw, 64px) 120px;
+    border: 1px solid var(--line); border-radius: var(--radius);
 }
-/* Sombra suave detrás del texto: la foto de fondo es clara en el centro y el texto debe leerse siempre. */
+/* La foto vive solo dentro del hero, difuminada; el degradado la lleva de clara arriba a negra abajo.
+   Un velo extra del lado izquierdo mantiene legible el título sobre la parte brillante de la foto. */
 .hero::before {
-    content: ""; position: absolute; inset: -40px -60px -40px -60px; z-index: -1; pointer-events: none;
-    background: linear-gradient(90deg, rgba(0, 0, 0, .74) 0%, rgba(0, 0, 0, .6) 60%, transparent 100%);
+    content: ""; position: absolute; inset: -24px; z-index: -2;
+    /* Más grande que la tarjeta y pegada a la izquierda: así la parte brillante del sol queda a la derecha, lejos del título. */
+    background: url("../img/hero-bg.webp") left 30% / 140% auto no-repeat;
+    filter: blur(6px);
+}
+.hero::after {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background:
+        linear-gradient(90deg, rgba(0, 0, 0, .7) 0%, rgba(0, 0, 0, .4) 55%, transparent 100%),
+        linear-gradient(180deg, rgba(0, 0, 0, .12) 0%, rgba(0, 0, 0, .5) 55%, #000 100%);
 }
 .hero .chip { align-self: flex-start; }
 .hero__title { font: 800 clamp(2.6rem, 5.4vw, 5rem)/1.06 var(--font-title); color: var(--heading); letter-spacing: -.02em; }
@@ -299,6 +296,10 @@ body::after {
     .about { grid-template-columns: 1fr; }
     .about__photo { max-width: 220px; }
     .section { padding: 54px 0; }
+}
+@media (max-width: 991px) {
+    .hero { padding-block: 64px 110px; }
+    .hero::after { background: linear-gradient(180deg, rgba(0, 0, 0, .55) 0%, rgba(0, 0, 0, .8) 55%, #000 100%); }
 }
 @media (max-width: 575px) {
     .section::before { width: 320px; height: 320px; right: -30%; }
