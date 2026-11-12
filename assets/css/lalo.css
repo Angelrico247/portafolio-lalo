@@ -129,18 +129,32 @@ ul { padding: 0; list-style: none; }
 }
 
 /* ---------- Hero ---------- */
-.hero { position: relative; min-height: calc(100vh - 140px); display: flex; flex-direction: column; justify-content: center; gap: 28px; padding: 90px 0 120px; }
-.hero__glow {
-    position: absolute; right: -6%; top: -4%; width: 520px; height: 520px; z-index: -1;
-    background: radial-gradient(closest-side, rgba(238, 72, 24, .28), transparent 72%);
-    pointer-events: none;
+.hero {
+    position: relative; isolation: isolate; overflow: hidden;
+    min-height: calc(100vh - 140px);
+    display: flex; flex-direction: column; justify-content: center; gap: 28px;
+    margin-top: 24px; padding: 90px clamp(24px, 5vw, 64px) 120px;
+    border: 1px solid var(--line); border-radius: var(--radius);
 }
+/* Foto de fondo del hero, difuminada, con un degradado oscuro del lado del texto para que se lea. */
+.hero::before {
+    content: ""; position: absolute; inset: -24px; z-index: -2;
+    background: url("../img/hero-bg.webp") right center / cover no-repeat;
+    filter: blur(6px);
+}
+.hero::after {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background:
+        linear-gradient(90deg, rgba(0, 0, 0, .92) 0%, rgba(0, 0, 0, .62) 55%, rgba(0, 0, 0, .38) 100%),
+        linear-gradient(0deg, rgba(0, 0, 0, .7), transparent 40%);
+}
+.hero .chip { align-self: flex-start; }
 .hero__title { font: 800 clamp(2.6rem, 5.4vw, 5rem)/1.06 var(--font-title); color: var(--heading); letter-spacing: -.02em; }
 .accent { color: var(--accent); }
 .hero__lead { max-width: 560px; font-size: 18px; color: var(--text); }
 .hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
 .scroll-badge {
-    position: absolute; right: 0; bottom: 8px; width: 130px; height: 130px;
+    position: absolute; right: clamp(20px, 3vw, 40px); bottom: clamp(20px, 3vw, 36px); width: 130px; height: 130px;
     display: grid; place-items: center; color: var(--heading); text-decoration: none;
 }
 .scroll-badge svg:first-child { position: absolute; inset: 0; width: 100%; height: 100%; animation: spin 18s linear infinite; }
@@ -259,11 +273,15 @@ ul { padding: 0; list-style: none; }
     .btn--block { grid-column: 1 / -1; }
     .topnav { top: 12px; }
     .hero { min-height: 0; padding: 60px 0 100px; }
-    .hero__glow { width: 360px; height: 360px; }
     .grid--2, .contact { grid-template-columns: 1fr; }
     .about { grid-template-columns: 1fr; }
     .about__photo { max-width: 220px; }
     .section { padding: 54px 0; }
+}
+@media (max-width: 991px) {
+    /* En pantallas angostas el texto cubre todo el ancho: oscurecemos parejo para que se lea sobre la foto. */
+    .hero::after { background: rgba(0, 0, 0, .74); }
+    .hero { padding-block: 64px 110px; }
 }
 @media (max-width: 575px) {
     .card { padding: 24px; }
