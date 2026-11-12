@@ -53,7 +53,8 @@
     var slider = document.getElementById("slider");
     function step(dir) {
         var card = slider.querySelector(".quote");
-        slider.scrollBy({ left: dir * (card.offsetWidth + 22), behavior: "smooth" });
+        var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        slider.scrollBy({ left: dir * (card.offsetWidth + 22), behavior: calm ? "auto" : "smooth" });
     }
     document.getElementById("prev").addEventListener("click", function () { step(-1); });
     document.getElementById("next").addEventListener("click", function () { step(1); });
@@ -84,8 +85,12 @@
             message: form.message.value.trim()
         };
         var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email);
-        if (!data.name || !emailOk || !data.subject || !data.message) {
+        var invalid = { name: !data.name, email: !emailOk, subject: !data.subject, message: !data.message };
+        Object.keys(invalid).forEach(function (k) { form[k].setAttribute("aria-invalid", invalid[k] ? "true" : "false"); });
+        if (invalid.name || invalid.email || invalid.subject || invalid.message) {
             say("Revisa que tu nombre, correo, asunto y mensaje estén completos.", "is-error");
+            var first = ["name", "email", "subject", "message"].filter(function (k) { return invalid[k]; })[0];
+            form[first].focus();
             return;
         }
         send.disabled = true;
