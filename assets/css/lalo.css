@@ -38,6 +38,36 @@ ul { padding: 0; list-style: none; }
 }
 .skip-link:focus { top: 16px; }
 
+/* ---------- Fondo de toda la página ---------- */
+/* La foto va pegada al inicio de la página, difuminada; un degradado la lleva de clara arriba a negra abajo. */
+:root { --bg-h: min(1150px, 150vh); }
+html, body { overflow-x: clip; }
+body { position: relative; }
+body::before {
+    content: ""; position: absolute; z-index: -2; top: -30px; left: -30px; right: -30px;
+    height: calc(var(--bg-h) + 30px);
+    background: url("../img/hero-bg.webp") center top / cover no-repeat;
+    filter: blur(9px);
+}
+body::after {
+    content: ""; position: absolute; z-index: -1; top: 0; left: 0; right: 0; height: var(--bg-h);
+    background: linear-gradient(180deg, rgba(0, 0, 0, .18) 0%, rgba(0, 0, 0, .55) 42%, #000 100%);
+}
+
+/* Esferas naranjas difuminadas detrás de cada sección (dos por sección, en lados alternos). */
+.section { position: relative; isolation: isolate; }
+.section::before, .section::after {
+    content: ""; position: absolute; z-index: -1; pointer-events: none; border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, rgba(238, 72, 24, .5), rgba(238, 72, 24, .14) 48%, transparent 70%);
+    filter: blur(28px);
+    animation: drift 22s ease-in-out infinite alternate;
+}
+.section::before { width: 520px; height: 520px; top: -6%; right: -14%; }
+.section::after { width: 340px; height: 340px; bottom: 4%; left: -8%; opacity: .75; animation-duration: 28s; animation-direction: alternate-reverse; }
+.section:nth-of-type(even)::before { right: auto; left: -12%; }
+.section:nth-of-type(even)::after { left: auto; right: -6%; }
+@keyframes drift { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(26px, 34px, 0) scale(1.08); } }
+
 /* ---------- Estructura ---------- */
 .shell {
     display: grid;
@@ -47,7 +77,7 @@ ul { padding: 0; list-style: none; }
     margin: 0 auto;
     padding: 32px;
 }
-.profile { position: sticky; top: 32px; align-self: start; height: calc(100vh - 64px); min-height: 640px; max-height: 860px; }
+.profile { position: sticky; z-index: 5; top: 32px; align-self: start; height: calc(100vh - 64px); min-height: 640px; max-height: 860px; }
 .profile__card {
     height: 100%;
     display: flex; flex-direction: column; gap: 22px;
@@ -76,7 +106,7 @@ ul { padding: 0; list-style: none; }
 .profile__facts a, .facts a { text-decoration: none; }
 .profile__facts a:hover, .facts a:hover { color: var(--accent); }
 
-.content { min-width: 0; overflow-x: clip; }
+.content { min-width: 0; }
 
 /* ---------- Menú de píldoras ---------- */
 .topnav {
@@ -130,23 +160,15 @@ ul { padding: 0; list-style: none; }
 
 /* ---------- Hero ---------- */
 .hero {
-    position: relative; isolation: isolate; overflow: hidden;
+    position: relative; isolation: isolate;
     min-height: calc(100vh - 140px);
     display: flex; flex-direction: column; justify-content: center; gap: 28px;
-    margin-top: 24px; padding: 90px clamp(24px, 5vw, 64px) 120px;
-    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 90px 0 120px;
 }
-/* Foto de fondo del hero, difuminada, con un degradado oscuro del lado del texto para que se lea. */
+/* Sombra suave detrás del texto: la foto de fondo es clara en el centro y el texto debe leerse siempre. */
 .hero::before {
-    content: ""; position: absolute; inset: -24px; z-index: -2;
-    background: url("../img/hero-bg.webp") right center / cover no-repeat;
-    filter: blur(6px);
-}
-.hero::after {
-    content: ""; position: absolute; inset: 0; z-index: -1;
-    background:
-        linear-gradient(90deg, rgba(0, 0, 0, .92) 0%, rgba(0, 0, 0, .62) 55%, rgba(0, 0, 0, .38) 100%),
-        linear-gradient(0deg, rgba(0, 0, 0, .7), transparent 40%);
+    content: ""; position: absolute; inset: -40px -60px -40px -60px; z-index: -1; pointer-events: none;
+    background: linear-gradient(90deg, rgba(0, 0, 0, .74) 0%, rgba(0, 0, 0, .6) 60%, transparent 100%);
 }
 .hero .chip { align-self: flex-start; }
 .hero__title { font: 800 clamp(2.6rem, 5.4vw, 5rem)/1.06 var(--font-title); color: var(--heading); letter-spacing: -.02em; }
@@ -278,12 +300,11 @@ ul { padding: 0; list-style: none; }
     .about__photo { max-width: 220px; }
     .section { padding: 54px 0; }
 }
-@media (max-width: 991px) {
-    /* En pantallas angostas el texto cubre todo el ancho: oscurecemos parejo para que se lea sobre la foto. */
-    .hero::after { background: rgba(0, 0, 0, .74); }
-    .hero { padding-block: 64px 110px; }
-}
 @media (max-width: 575px) {
+    .section::before { width: 320px; height: 320px; right: -30%; }
+    .section::after { width: 240px; height: 240px; left: -25%; }
+    .section:nth-of-type(even)::before { left: -30%; right: auto; }
+    .section:nth-of-type(even)::after { right: -25%; left: auto; }
     .card { padding: 24px; }
     .scroll-badge { width: 100px; height: 100px; }
     .section__head { flex-direction: column; align-items: flex-start; }
@@ -293,7 +314,7 @@ ul { padding: 0; list-style: none; }
 }
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .scroll-badge svg:first-child { animation: none; }
+    .scroll-badge svg:first-child, .section::before, .section::after { animation: none; }
     .reveal { opacity: 1; transform: none; transition: none; }
     .work img, .btn { transition: none; }
 }
