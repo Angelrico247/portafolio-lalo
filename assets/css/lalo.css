@@ -153,7 +153,7 @@ html, body { overflow-x: clip; }
     margin-top: 24px; padding: 90px clamp(24px, 5vw, 64px) 120px;
     border: 1px solid var(--line); border-radius: var(--radius);
 }
-/* La foto vive solo dentro del hero, difuminada; el degradado la lleva de clara arriba a negra abajo.
+/* La foto vive solo dentro del hero, difuminada; el degradado la lleva de clara arriba a oscura abajo, sin tapar la foto hasta el borde inferior.
    Un velo extra del lado izquierdo mantiene legible el título sobre la parte brillante de la foto. */
 .hero::before {
     content: ""; position: absolute; inset: -24px; z-index: -2;
@@ -165,7 +165,7 @@ html, body { overflow-x: clip; }
     content: ""; position: absolute; inset: 0; z-index: -1;
     background:
         linear-gradient(90deg, rgba(0, 0, 0, .7) 0%, rgba(0, 0, 0, .4) 55%, transparent 100%),
-        linear-gradient(180deg, rgba(0, 0, 0, .12) 0%, rgba(0, 0, 0, .5) 55%, #000 100%);
+        linear-gradient(180deg, rgba(0, 0, 0, .12) 0%, rgba(0, 0, 0, .42) 55%, rgba(0, 0, 0, .72) 100%);
 }
 .hero .chip { align-self: flex-start; }
 .hero__title { font: 800 clamp(2.6rem, 5.4vw, 5rem)/1.06 var(--font-title); color: var(--heading); letter-spacing: -.02em; }
@@ -299,7 +299,7 @@ html, body { overflow-x: clip; }
 }
 @media (max-width: 991px) {
     .hero { padding-block: 64px 110px; }
-    .hero::after { background: linear-gradient(180deg, rgba(0, 0, 0, .55) 0%, rgba(0, 0, 0, .8) 55%, #000 100%); }
+    .hero::after { background: linear-gradient(180deg, rgba(0, 0, 0, .55) 0%, rgba(0, 0, 0, .75) 55%, rgba(0, 0, 0, .85) 100%); }
 }
 @media (max-width: 575px) {
     .section::before { width: 320px; height: 320px; right: -30%; }
